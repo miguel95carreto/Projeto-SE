@@ -8,7 +8,6 @@ import java.util.stream.Stream;
 import pt.ulisboa.tecnico.learnjava.bank.exceptions.AccountException;
 import pt.ulisboa.tecnico.learnjava.bank.exceptions.BankException;
 import pt.ulisboa.tecnico.learnjava.bank.exceptions.ClientException;
-import pt.ulisboa.tecnico.learnjava.bank.services.Services;
 
 public class Bank {
 	public enum AccountType {
@@ -40,7 +39,7 @@ public class Bank {
 	private final Set<Account> accounts;
 
 	public Bank(String code) throws BankException {
-		checkCode(code);
+		this.checkCode(code);
 
 		this.code = code;
 		this.clients = new HashSet<Client>();
@@ -92,7 +91,7 @@ public class Bank {
 
 		this.accounts.add(account);
 
-		return getCode() + account.getAccountId();
+		return this.getCode() + account.getAccountId();
 	}
 
 	public void deleteAccount(Account account) throws BankException {
@@ -138,7 +137,7 @@ public class Bank {
 	}
 
 	public void deleteClient(String nif) throws BankException {
-		Client client = getClientByNif(nif);
+		Client client = this.getClientByNif(nif);
 
 		if (client == null) {
 			throw new BankException();
@@ -151,31 +150,31 @@ public class Bank {
 		this.accounts.removeAll(accountsToRemove);
 	}
 
-	public static void main(String[] args) throws BankException, AccountException, ClientException {
-		Services services = new Services();
-		Bank cgd = new Bank("CGD");
-
-		Client clientOne = new Client(cgd, "José", "Manuel", "123456789", "987654321", "Street", 34);
-		Client clientTwo = new Client(cgd, "José", "Manuel", "123456789", "987654321", "Street", 34);
-
-		cgd.createAccount(AccountType.CHECKING, clientOne, 100, 0);
-		String iban = cgd.createAccount(AccountType.CHECKING, clientTwo, 1000, 0);
-
-		System.out.println(cgd.getTotalNumberOfAccounts());
-
-		Account account = services.getAccountByIban(iban);
-
-		try {
-			account.deposit(100);
-		} catch (AccountException e) {
-			System.out.println("You tried to deposit a negative amount of " + e.getValue());
-		}
-
-		System.out.println(account.getBalance());
-
-		cgd.deleteAccount(account);
-
-		System.out.println(cgd.getTotalNumberOfAccounts());
-	}
+//	public static void main(String[] args) throws BankException, AccountException, ClientException {
+//		Services services = new Services();
+//		Bank cgd = new Bank("CGD");
+//
+//		Client clientOne = new Client(cgd, "José", "Manuel", "123456789", "987654321", "Street", 34);
+//		Client clientTwo = new Client(cgd, "José", "Manuel", "123456789", "987654321", "Street", 34);
+//
+//		cgd.createAccount(AccountType.CHECKING, clientOne, 100, 0);
+//		String iban = cgd.createAccount(AccountType.CHECKING, clientTwo, 1000, 0);
+//
+//		System.out.println(cgd.getTotalNumberOfAccounts());
+//
+//		Account account = services.getAccountByIban(iban);
+//
+//		try {
+//			account.deposit(100);
+//		} catch (AccountException e) {
+//			System.out.println("You tried to deposit a negative amount of " + e.getValue());
+//		}
+//
+//		System.out.println(account.getBalance());
+//
+//		cgd.deleteAccount(account);
+//
+//		System.out.println(cgd.getTotalNumberOfAccounts());
+//	}
 
 }
