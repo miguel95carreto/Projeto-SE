@@ -46,8 +46,8 @@ public class mbWaySplitBillController {
 			System.out.println("Oh no! One friend is missing.");
 			return;
 		} else {
+			this.totalAmount = this.friendsMap.values().stream().mapToInt(v -> Integer.parseInt(v)).sum();
 			for (String val : this.friendsMap.values()) {
-				this.totalAmount += Integer.parseInt(val);
 			}
 			if (Integer.parseInt(amount) == this.totalAmount) {
 				for (String phoneNumber : this.friendsMap.keySet()) {
@@ -55,11 +55,9 @@ public class mbWaySplitBillController {
 					if (account.getBalance() < Integer.parseInt(this.friendsMap.get(phoneNumber))) {
 						System.out.println("Oh no! One of your friends does not have money to pay!");
 						return;
-					} else {
-						if (!(MbWay.mbWayClients.get(phoneNumber).equals(this.targetIban))) {
-							this.mbwayTransferController.mbway_transfer(phoneNumber, this.targetPhoneNumber,
-									this.friendsMap.get(phoneNumber));
-						}
+					} else if (!(MbWay.mbWayClients.get(phoneNumber).equals(this.targetIban))) {
+						this.mbwayTransferController.mbway_transfer(phoneNumber, this.targetPhoneNumber,
+								this.friendsMap.get(phoneNumber));
 					}
 				}
 				System.out.println("Bill payed successfully!");
