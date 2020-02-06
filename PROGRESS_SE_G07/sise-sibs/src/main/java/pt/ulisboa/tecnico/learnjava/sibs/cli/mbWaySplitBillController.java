@@ -47,8 +47,6 @@ public class mbWaySplitBillController {
 			return;
 		} else {
 			this.totalAmount = this.friendsMap.values().stream().mapToInt(v -> Integer.parseInt(v)).sum();
-			for (String val : this.friendsMap.values()) {
-			}
 			if (Integer.parseInt(amount) == this.totalAmount) {
 				for (String phoneNumber : this.friendsMap.keySet()) {
 					Account account = (this.services.getAccountByIban(MbWay.mbWayClients.get(phoneNumber)));
