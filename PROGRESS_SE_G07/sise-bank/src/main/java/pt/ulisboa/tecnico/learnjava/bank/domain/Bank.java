@@ -65,11 +65,8 @@ public class Bank {
 		return this.code;
 	}
 
-	public String createAccount(AccountType type, Client client, int amount, int value)
+	public Account switchAccount(AccountType type, Client client, int amount, int value)
 			throws BankException, AccountException, ClientException {
-		if (client.getBank() != this) {
-			throw new BankException();
-		}
 
 		Account account;
 		switch (type) {
@@ -88,6 +85,17 @@ public class Bank {
 		default:
 			throw new BankException();
 		}
+
+		return account;
+	}
+
+	public String createAccount(AccountType type, Client client, int amount, int value)
+			throws BankException, AccountException, ClientException {
+		if (client.getBank() != this) {
+			throw new BankException();
+		}
+
+		Account account = this.switchAccount(type, client, amount, value);
 
 		this.accounts.add(account);
 
