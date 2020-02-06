@@ -23,8 +23,8 @@ public class Client {
 
 	public Client(Bank bank, String firstName, String lastName, String nif, String phoneNumber, String address, int age)
 			throws ClientException {
-		checkParameters(bank, nif, phoneNumber, age);
-
+		this.checkBankandPhoneNumber(bank, phoneNumber);
+		this.checkNifandAge(nif, age);
 		this.bank = bank;
 		this.firstName = firstName;
 		this.lastName = lastName;
@@ -39,7 +39,7 @@ public class Client {
 	}
 
 	public String getMbwayState() {
-		return mbwayState;
+		return this.mbwayState;
 	}
 
 	public void setMbwayState(String mbwayState) {
@@ -47,27 +47,23 @@ public class Client {
 	}
 
 	public Integer getMbwayCode() {
-		return mbwayCode;
+		return this.mbwayCode;
 	}
 
 	public void setMbwayCode(Integer mbwayCode) {
 		this.mbwayCode = mbwayCode;
 	}
 
-	private void checkParameters(Bank bank, String nif, String phoneNumber, int age) throws ClientException {
-		if (age < 0) {
+	private void checkBankandPhoneNumber(Bank bank, String phoneNumber) throws ClientException {
+		if (this.age < 0 || (phoneNumber.length() != 9 || !phoneNumber.matches("[0-9]+")
+				|| (bank.getClientByNif(this.nif) != null))) {
 			throw new ClientException();
 		}
 
-		if (nif.length() != 9 || !nif.matches("[0-9]+")) {
-			throw new ClientException();
-		}
+	}
 
-		if (phoneNumber.length() != 9 || !phoneNumber.matches("[0-9]+")) {
-			throw new ClientException();
-		}
-
-		if (bank.getClientByNif(nif) != null) {
+	public void checkNifandAge(String nif, int age) throws ClientException {
+		if (nif.length() != 9 || !nif.matches("[0-9]+") || age < 0) {
 			throw new ClientException();
 		}
 	}

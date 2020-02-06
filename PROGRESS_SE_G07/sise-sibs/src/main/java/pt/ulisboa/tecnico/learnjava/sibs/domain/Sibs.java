@@ -10,6 +10,7 @@ import pt.ulisboa.tecnico.learnjava.sibs.exceptions.SibsException;
 
 public class Sibs {
 	final Operation[] operations;
+	Operation operation;
 	Services services;
 
 	private static Set<TransferOperation> transferOperationSet = new HashSet<TransferOperation>();
@@ -24,8 +25,8 @@ public class Sibs {
 		if (!this.services.verifyAccounts(sourceIban, targetIban)) {
 			throw new SibsException();
 		}
-		TransferOperation operation = (TransferOperation) getOperation(
-				addOperation(Operation.OPERATION_TRANSFER, sourceIban, targetIban, amount));
+		TransferOperation operation = (TransferOperation) this
+				.getOperation(this.addOperation(Operation.OPERATION_TRANSFER, sourceIban, targetIban, amount));
 		transferOperationSet.add(operation);
 	}
 
@@ -39,7 +40,7 @@ public class Sibs {
 	}
 
 	public void cancelOperation(int position) throws SibsException, AccountException {
-		Operation operation = getOperation(position);
+		Operation operation = this.getOperation(position);
 		if (operation instanceof TransferOperation) {
 			((TransferOperation) operation).getStatus().cancel(this, (TransferOperation) operation);
 		}
@@ -59,14 +60,13 @@ public class Sibs {
 			throw new SibsException();
 		}
 
-		Operation operation;
 		if (type.equals(Operation.OPERATION_TRANSFER)) {
-			operation = new TransferOperation(sourceIban, targetIban, value);
+			this.operation = new TransferOperation(sourceIban, targetIban, value);
 		} else {
-			operation = new PaymentOperation(targetIban, value);
+			this.operation = new PaymentOperation(targetIban, value);
 		}
 
-		this.operations[position] = operation;
+		this.operations[position] = this.operation;
 		return position;
 	}
 
