@@ -12,14 +12,20 @@ public class Client {
 	private final Set<Account> accounts = new HashSet<Account>();
 
 	private final Bank bank;
-	private final String firstName;
-	private final String lastName;
-	private final String nif;
-	private final String phoneNumber;
-	private final String address;
+	private String firstName;
+	private String lastName;
+	private String nif;
+	private String phoneNumber;
+	private String address;
 	private int age;
 	public Integer mbwayCode;
 	String mbwayState;
+	private IdCard idCard;
+
+	public Client(Bank bank, IdCard idCard) {
+		this.bank = bank;
+		this.idCard = idCard;
+	}
 
 	public Client(Bank bank, String firstName, String lastName, String nif, String phoneNumber, String address, int age)
 			throws ClientException {
@@ -55,8 +61,7 @@ public class Client {
 	}
 
 	private void checkBankandPhoneNumber(Bank bank, String phoneNumber) throws ClientException {
-		if (this.age < 0 || (phoneNumber.length() != 9 || !phoneNumber.matches("[0-9]+")
-				|| (bank.getClientByNif(this.nif) != null))) {
+		if ((phoneNumber.length() != 9 || !phoneNumber.matches("[0-9]+") || (bank.getClientByNif(this.nif) != null))) {
 			throw new ClientException();
 		}
 
